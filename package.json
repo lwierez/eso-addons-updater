@@ -4,8 +4,8 @@
   "description": "",
   "main": "electron/main.js",
   "scripts": {
-    "electron:start": "tsc electron/*.ts && electron .",
-    "webpack:build": "webpack . --config webpack.common.js",
+    "electron:start": "tsc electron/preload.ts && tsc electron/main.ts && electron .",
+    "watch": "webpack --config webpack.common.js --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
