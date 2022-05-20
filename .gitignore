@@ -1,5 +1,9 @@
 # Node modules & build path
 build
 node_modules
+
 # Compiled files for electron. We only want the typescript source files in the repository
 electron/*.js
+
+# IDE configs
+.vscode
