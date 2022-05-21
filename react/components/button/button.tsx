@@ -3,6 +3,8 @@ import './button.scss'
 
 interface IProps {
   text: string
+  selected: boolean
+  setSelectedButton: (page: string) => void
 }
 
 interface IState {
@@ -20,11 +22,9 @@ export default class Button extends React.Component<IProps, IState> {
   render() {
     return (
       <button
-        className={this.state.isClicked ? 'button' : 'button clicked'}
+        className={this.props.selected ? 'button clicked' : 'button'}
         onClick={() => {
-          this.setState((previousState: IState) => {
-            return { isClicked: !previousState.isClicked }
-          })
+          this.props.setSelectedButton(this.props.text)
         }}
       >
         {this.props.text}

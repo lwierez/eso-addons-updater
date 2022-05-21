@@ -5,29 +5,28 @@ import Button from '../button/button'
 
 interface IProps {}
 
-interface IState {
-  OpenedPage: string
-}
-
-export default class Menu extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props)
-
-    this.state = {
-      OpenedPage: 'My directory',
-    }
-  }
-
-  render() {
-    return (
-      <div className="content">
-        <div className="menu">
-          <Button text="My directory" />
-          <Button text="My addons" />
-          <Button text="Update" />
-        </div>
-        <div className="page"></div>
+export default function Menu(_props: IProps) {
+  const [openedPage, setOpenedPage] = useState('My directory')
+  return (
+    <div className="content">
+      <div className="menu">
+        <Button
+          text="My directory"
+          selected={openedPage == 'My directory'}
+          setSelectedButton={setOpenedPage}
+        />
+        <Button
+          text="My addons"
+          selected={openedPage == 'My addons'}
+          setSelectedButton={setOpenedPage}
+        />
+        <Button
+          text="Update"
+          selected={openedPage == 'Update'}
+          setSelectedButton={setOpenedPage}
+        />
       </div>
-    )
-  }
+      <div className="page"></div>
+    </div>
+  )
 }
