@@ -9,6 +9,21 @@ export default class Menu extends React.Component<IProps> {
   }
 
   render() {
-    return <div className="menu">Menu</div>
+    return (
+      <div className="menu">
+        <input
+          type="file"
+          onChange={(event) => {
+            console.log(event.target.files)
+            if (event.target.files)
+              window.electron.fileApi
+                .getAddonsConfig(event.target.files[0].path)
+                .then((data) => {
+                  console.log(data)
+                })
+          }}
+        />
+      </div>
+    )
   }
 }
