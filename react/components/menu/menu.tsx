@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import './menu.scss'
 
 import Button from '../button/button'
+import MyAddons from '../myAddons/myAddons'
+import Update from '../Update/update'
+import MyDirectory from '../myDirectory/myDirectory'
 
 interface IProps {}
 
@@ -26,7 +29,11 @@ export default function Menu(_props: IProps) {
           setSelectedButton={setOpenedPage}
         />
       </div>
-      <div className="page"></div>
+      <div className="page">
+        {openedPage == 'My directory' && <MyDirectory text={'my directory'} />}
+        {openedPage == 'My addons' && <MyAddons text={'my addons'} />}
+        {openedPage == 'Update' && <Update text={'Update'} />}
+      </div>
     </div>
   )
 }
