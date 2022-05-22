@@ -5,8 +5,9 @@ import Menu from '../menu/menu'
 export default function App() {
   return (
     <>
-      <div className="title">
-        <h1>Eso addons updater</h1>
+      <div className="header">
+        <img className="eso-img" src="img/eso.jpg" />
+        <h1 className="title">Eso addons updater</h1>
       </div>
       <Menu />
     </>
