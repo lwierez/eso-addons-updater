@@ -6,7 +6,7 @@ interface IProps {
 
 interface IState {}
 
-export default class myDirectory extends React.Component<IProps, IState> {
+export default class MyDirectory extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
   }

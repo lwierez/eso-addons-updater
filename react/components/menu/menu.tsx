@@ -3,7 +3,7 @@ import './menu.scss'
 
 import Button from '../button/button'
 import MyAddons from '../myAddons/myAddons'
-import Update from '../Update/update'
+import Update from '../update/update'
 import MyDirectory from '../myDirectory/myDirectory'
 
 interface IProps {}

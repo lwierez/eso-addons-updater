@@ -6,7 +6,7 @@ interface IProps {
 
 interface IState {}
 
-export default class update extends React.Component<IProps, IState> {
+export default class Update extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
   }
