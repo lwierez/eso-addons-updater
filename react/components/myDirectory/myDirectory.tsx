@@ -15,20 +15,6 @@ export default class MyDirectory extends React.Component<IProps, IState> {
     return (
       <>
         <p>{this.props.text}</p>
-        <div className="menu">
-          <input
-            type="file"
-            onChange={(event) => {
-              console.log(event.target.files)
-              if (event.target.files)
-                window.electron.fileApi
-                  .getAddonsConfig(event.target.files[0].path)
-                  .then((data) => {
-                    console.log(data)
-                  })
-            }}
-          />
-        </div>
       </>
     )
   }
