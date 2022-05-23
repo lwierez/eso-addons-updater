@@ -34,7 +34,7 @@ ipcMain.on('get-settings-entry', (event: any, key: string) => {
       let config = JSON.parse(data)
       event.sender.send('reply-settings-entry', config[key])
     } catch (error) {
-      event.sender.send('reply-settings-entry', '')
+      event.sender.send('reply-settings-entry', undefined)
     }
   })
 })

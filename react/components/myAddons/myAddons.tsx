@@ -11,7 +11,9 @@ export default function MyAddons(props: IProps) {
 
   return (
     <>
-      <AddonsList addonsConfig={addonsConfig} />
+      {(addonsConfig.mods.length > 0 && (
+        <AddonsList addonsConfig={addonsConfig} />
+      )) || <div>No addon found (please insert funny image)! Is ESO Addons Updater configured?</div>}
     </>
   )
 }

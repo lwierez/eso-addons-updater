@@ -8,9 +8,11 @@ contextBridge.exposeInMainWorld('electron', {
       ipcRenderer.send('get-settings-entry', 'config_path')
 
       return new Promise<IAddonsConfig>((resolve) => {
-        ipcRenderer.once('reply-settings-entry', (_event: any, path: string) => {
-          if (path == '')
+        ipcRenderer.once('reply-settings-entry', (_event: any, path?: string) => {
+          if (!path) {
             resolve({"mods": Array<IAddonEntry>()})
+            return
+          }
           ipcRenderer.send('get-addons-config', path)
           ipcRenderer.once(
             'reply-addons-config',
