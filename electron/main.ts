@@ -27,8 +27,14 @@ ipcMain.on('get-addons-config', (event: any, path: string) => {
 })
 
 ipcMain.on('get-settings-entry', (event: any, key: string) => {
-  fs.readFile('settings.json', (_error: any, data: string) => {
-    let config = JSON.parse(data)
-    event.sender.send('reply-settings-entry', config[key])
+  fs.readFile('settings.json', (error: any, data: string) => {
+    if (error)
+      return
+    try {
+      let config = JSON.parse(data)
+      event.sender.send('reply-settings-entry', config[key])
+    } catch (error) {
+      event.sender.send('reply-settings-entry', '')
+    }
   })
 })
