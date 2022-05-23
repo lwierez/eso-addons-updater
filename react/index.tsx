@@ -10,7 +10,7 @@ declare global {
   interface Window {
     electron: {
       fileApi: {
-        getAddonsConfig(path: string): Promise<IAddonsConfig>
+        getAddonsConfig(): Promise<IAddonsConfig>
       }
     }
   }

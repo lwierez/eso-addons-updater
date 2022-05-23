@@ -19,24 +19,16 @@ export default class MyAddons extends React.Component<IProps, IState> {
         mods: Array<IAddonEntry>(),
       },
     }
+
+    // TODO: do fetching config in parent code, on button click
+    window.electron.fileApi.getAddonsConfig().then((data: IAddonsConfig) => {
+      this.setState({ addonsConfig: data })
+    })
   }
 
   render() {
     return (
       <>
-        <div>
-          <input
-            type="file"
-            onChange={(event) => {
-              if (event.target.files)
-                window.electron.fileApi
-                  .getAddonsConfig(event.target.files[0].path)
-                  .then((data: IAddonsConfig) => {
-                    this.setState({ addonsConfig: data })
-                  })
-            }}
-          />
-        </div>
         <AddonsList addonsConfig={this.state.addonsConfig} />
       </>
     )
