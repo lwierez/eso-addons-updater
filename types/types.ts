@@ -7,3 +7,7 @@ export interface IAddonEntry {
 export interface IAddonsConfig {
     mods: Array<IAddonEntry>
 }
+
+export interface ISettings {
+    config_path: string
+}

@@ -1,4 +1,4 @@
-import { IAddonEntry, IAddonsConfig } from '../types/types'
+import { IAddonEntry, IAddonsConfig, ISettings } from '../types/types'
 
 const { ipcRenderer, contextBridge } = require('electron')
 
@@ -23,5 +23,15 @@ contextBridge.exposeInMainWorld('electron', {
         })
       })
     },
+
+    getSettings() {
+      ipcRenderer.send('get-settings')
+
+      return new Promise<ISettings | undefined>((resolve) => {
+        ipcRenderer.once('reply-settings', (_event: any, settings?: ISettings) => {
+          resolve(settings)
+        })
+      })
+    }
   },
 })

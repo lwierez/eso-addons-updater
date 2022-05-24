@@ -1,11 +1,14 @@
 import React from 'react'
+import { ISettings } from '../../../types/types'
 
 interface IProps {
-  text: string
+  settings?: ISettings
 }
 
 export default function Settings(props: IProps) {
-  const { text } = props
+  const { settings } = props
 
-  return <p>{text}</p>
+  return <>
+    {settings && <div>Settings</div> || <div>No settings</div>}
+  </>
 }

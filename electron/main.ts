@@ -28,13 +28,30 @@ ipcMain.on('get-addons-config', (event: any, path: string) => {
 
 ipcMain.on('get-settings-entry', (event: any, key: string) => {
   fs.readFile('settings.json', (error: any, data: string) => {
-    if (error)
+    if (error) {
       event.sender.send('reply-settings-entry', undefined)
+      return
+    }
     try {
       let config = JSON.parse(data)
       event.sender.send('reply-settings-entry', config[key])
     } catch (error) {
       event.sender.send('reply-settings-entry', undefined)
+    }
+  })
+})
+
+ipcMain.on('get-settings', (event: any) => {
+  fs.readFile('settings.json', (error: any, data: string) => {
+    if (error) {
+      event.sender.send('reply-settings', undefined)
+      return
+    }
+    try {
+      let settings = JSON.parse(data)
+      event.sender.send('reply-settings', settings)
+    } catch (error) {
+      event.sender.send('reply-settings', undefined)
     }
   })
 })

@@ -5,7 +5,7 @@ import Button from '../button/button'
 import MyAddons from '../myAddons/myAddons'
 import ManageAddons from '../manageAddons/manageAddons'
 import Settings from '../settings/settings'
-import { IAddonEntry, IAddonsConfig } from '../../../types/types'
+import { IAddonEntry, IAddonsConfig, ISettings } from '../../../types/types'
 
 interface IProps {}
 
@@ -14,6 +14,7 @@ export default function Menu(_props: IProps) {
   const [addonsConfig, setAddonsConfig] = useState({
     mods: Array<IAddonEntry>(),
   })
+  const [settings, setSettings] = useState<ISettings>()
 
   return (
     <div className="content">
@@ -21,7 +22,14 @@ export default function Menu(_props: IProps) {
         <Button
           text="My Addons"
           selected={openedPage == 'My Addons'}
-          setSelectedButton={setOpenedPage}
+          setSelectedButton={(text: string) => {
+            setOpenedPage(text)
+            window.electron.fileApi
+              .getAddonsConfig()
+              .then((data: IAddonsConfig) => {
+                setAddonsConfig(data)
+              })
+          }}
         />
         <Button
           text="Manage Addons"
@@ -33,11 +41,9 @@ export default function Menu(_props: IProps) {
           selected={openedPage == 'Settings'}
           setSelectedButton={(text: string) => {
             setOpenedPage(text)
-            window.electron.fileApi
-              .getAddonsConfig()
-              .then((data: IAddonsConfig) => {
-                setAddonsConfig(data)
-              })
+            window.electron.fileApi.getSettings().then((settings?: ISettings) => {
+              setSettings(settings)
+            })
           }}
         />
       </div>
@@ -47,7 +53,7 @@ export default function Menu(_props: IProps) {
         {openedPage == 'Manage Addons' && (
           <ManageAddons text={'Manage Addons'} />
         )}
-        {openedPage == 'Settings' && <Settings text={'Settings'} />}
+        {openedPage == 'Settings' && <Settings settings={settings} />}
       </div>
     </div>
   )
