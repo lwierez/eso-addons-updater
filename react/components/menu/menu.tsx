@@ -3,14 +3,14 @@ import './menu.scss'
 
 import Button from '../button/button'
 import MyAddons from '../myAddons/myAddons'
-import Update from '../update/update'
-import MyDirectory from '../myDirectory/myDirectory'
+import ManageAddons from '../manageAddons/manageAddons'
+import Settings from '../settings/settings'
 import { IAddonEntry, IAddonsConfig } from '../../../types/types'
 
 interface IProps {}
 
 export default function Menu(_props: IProps) {
-  const [openedPage, setOpenedPage] = useState('My directory')
+  const [openedPage, setOpenedPage] = useState('Settings')
   const [addonsConfig, setAddonsConfig] = useState({
     mods: Array<IAddonEntry>(),
   })
@@ -19,8 +19,19 @@ export default function Menu(_props: IProps) {
     <div className="content">
       <div className="menu">
         <Button
-          text="My directory"
-          selected={openedPage == 'My directory'}
+          text="My Addons"
+          selected={openedPage == 'My Addons'}
+          setSelectedButton={setOpenedPage}
+        />
+        <Button
+          text="Manage Addons"
+          selected={openedPage == 'Manage Addons'}
+          setSelectedButton={setOpenedPage}
+        />
+
+        <Button
+          text="Settings"
+          selected={openedPage == 'Settings'}
           setSelectedButton={(text: string) => {
             setOpenedPage(text)
             window.electron.fileApi
@@ -30,23 +41,14 @@ export default function Menu(_props: IProps) {
               })
           }}
         />
-        <Button
-          text="My addons"
-          selected={openedPage == 'My addons'}
-          setSelectedButton={setOpenedPage}
-        />
-        <Button
-          text="Update"
-          selected={openedPage == 'Update'}
-          setSelectedButton={setOpenedPage}
-        />
       </div>
+
       <div className="page">
-        {openedPage == 'My directory' && (
-          <MyDirectory addonsConfig={addonsConfig} />
+        {openedPage == 'Settings' && <Settings addonsConfig={addonsConfig} />}
+        {openedPage == 'My Addons' && <MyAddons text={'My addons'} />}
+        {openedPage == 'Manage Addons' && (
+          <ManageAddons text={'ManageAddons'} />
         )}
-        {openedPage == 'My addons' && <MyAddons text={'my directory'} />}
-        {openedPage == 'Update' && <Update text={'Update'} />}
       </div>
     </div>
   )

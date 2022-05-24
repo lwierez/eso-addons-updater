@@ -6,7 +6,7 @@ interface IProps {
   addonsConfig: IAddonsConfig
 }
 
-export default function MyDirectory(props: IProps) {
+export default function Settings(props: IProps) {
   const { addonsConfig } = props
 
   return (
