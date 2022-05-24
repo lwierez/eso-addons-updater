@@ -21,11 +21,6 @@ export default function Menu(_props: IProps) {
         <Button
           text="My directory"
           selected={openedPage == 'My directory'}
-          setSelectedButton={setOpenedPage}
-        />
-        <Button
-          text="My addons"
-          selected={openedPage == 'My addons'}
           setSelectedButton={(text: string) => {
             setOpenedPage(text)
             window.electron.fileApi
@@ -36,14 +31,21 @@ export default function Menu(_props: IProps) {
           }}
         />
         <Button
+          text="My addons"
+          selected={openedPage == 'My addons'}
+          setSelectedButton={setOpenedPage}
+        />
+        <Button
           text="Update"
           selected={openedPage == 'Update'}
           setSelectedButton={setOpenedPage}
         />
       </div>
       <div className="page">
-        {openedPage == 'My directory' && <MyDirectory text={'my directory'} />}
-        {openedPage == 'My addons' && <MyAddons addonsConfig={addonsConfig} />}
+        {openedPage == 'My directory' && (
+          <MyDirectory addonsConfig={addonsConfig} />
+        )}
+        {openedPage == 'My addons' && <MyAddons text={'my directory'} />}
         {openedPage == 'Update' && <Update text={'Update'} />}
       </div>
     </div>
