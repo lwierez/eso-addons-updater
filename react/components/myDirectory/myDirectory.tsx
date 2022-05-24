@@ -1,17 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { IAddonsConfig } from '../../../types/types'
+import AddonsList from '../addonsList/addonsList'
 
 interface IProps {
-  text: string
+  addonsConfig: IAddonsConfig
 }
 
-interface IState {}
+export default function MyDirectory(props: IProps) {
+  const { addonsConfig } = props
 
-export default class MyDirectory extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props)
-  }
-
-  render() {
-    return <p>{this.props.text}</p>
-  }
+  return (
+    <>
+      {(addonsConfig.mods.length > 0 && (
+        <AddonsList addonsConfig={addonsConfig} />
+      )) || (
+        <div>
+          No addon found (please insert funny image)! Is ESO Addons Updater
+          configured?
+        </div>
+      )}
+    </>
+  )
 }

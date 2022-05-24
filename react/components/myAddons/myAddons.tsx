@@ -1,17 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { IAddonsConfig } from '../../../types/types'
+import AddonsList from '../addonsList/addonsList'
 
 interface IProps {
   text: string
 }
 
-interface IState {}
+export default function MyAddons(props: IProps) {
+  const { text } = props
 
-export default class MyAddons extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props)
-  }
-
-  render() {
-    return <p>{this.props.text}</p>
-  }
+  return <p>{text}</p>
 }
