@@ -10,7 +10,7 @@ import { IAddonEntry, IAddonsConfig } from '../../../types/types'
 interface IProps {}
 
 export default function Menu(_props: IProps) {
-  const [openedPage, setOpenedPage] = useState('Settings')
+  const [openedPage, setOpenedPage] = useState('My Addons')
   const [addonsConfig, setAddonsConfig] = useState({
     mods: Array<IAddonEntry>(),
   })
@@ -28,7 +28,6 @@ export default function Menu(_props: IProps) {
           selected={openedPage == 'Manage Addons'}
           setSelectedButton={setOpenedPage}
         />
-
         <Button
           text="Settings"
           selected={openedPage == 'Settings'}
@@ -44,11 +43,11 @@ export default function Menu(_props: IProps) {
       </div>
 
       <div className="page">
-        {openedPage == 'Settings' && <Settings addonsConfig={addonsConfig} />}
-        {openedPage == 'My Addons' && <MyAddons text={'My addons'} />}
+        {openedPage == 'My Addons' && <MyAddons addonsConfig={addonsConfig} />}
         {openedPage == 'Manage Addons' && (
-          <ManageAddons text={'ManageAddons'} />
+          <ManageAddons text={'Manage Addons'} />
         )}
+        {openedPage == 'Settings' && <Settings text={'Settings'} />}
       </div>
     </div>
   )
