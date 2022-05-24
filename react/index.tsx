@@ -11,7 +11,8 @@ declare global {
     electron: {
       fileApi: {
         getAddonsConfig(): Promise<IAddonsConfig>,
-        getSettings(): Promise<ISettings|undefined>
+        getSettings(): Promise<ISettings|undefined>,
+        saveSettings(settings: ISettings): void
       }
     }
   }
