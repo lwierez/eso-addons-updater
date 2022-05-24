@@ -8,3 +8,6 @@ types/*.js
 
 # IDE configs
 .vscode
+
+# App settings
+settings.json
