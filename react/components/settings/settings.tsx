@@ -1,11 +1,42 @@
 import React from 'react'
+import { ISettings } from '../../../types/types'
 
 interface IProps {
-  text: string
+  signalSettingsChange: () => void
+  settings?: ISettings
 }
 
-export default function Settings(props: IProps) {
-  const { text } = props
+interface IState {}
 
-  return <p>{text}</p>
+export default class Settings extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
+    super(props)
+  }
+
+  saveSettings(newSettings: ISettings) {
+    window.electron.fileApi.saveSettings(newSettings)
+  }
+
+  render() {
+    return (
+      <>
+        {(this.props.settings && (
+          <div>
+            <span>Addons configuration files: {this.props.settings.config_path}</span>
+            <input
+              type="file"
+              onChange={(event) => {
+                if (!this.props.settings) return
+                if (!event.target.files) return
+                let newSettings = this.props.settings
+                newSettings.config_path = event.target.files[0].path
+                this.saveSettings(newSettings)
+                this.props.signalSettingsChange()
+              }}
+            />
+          </div>
+        )) || <div>No settings</div>}
+      </>
+    )
+  }
 }

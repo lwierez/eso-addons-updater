@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './menu.scss'
 
 import Button from '../button/button'
 import MyAddons from '../myAddons/myAddons'
 import ManageAddons from '../manageAddons/manageAddons'
 import Settings from '../settings/settings'
-import { IAddonEntry, IAddonsConfig } from '../../../types/types'
+import { IAddonEntry, IAddonsConfig, ISettings } from '../../../types/types'
 
 interface IProps {}
 
@@ -14,6 +14,13 @@ export default function Menu(_props: IProps) {
   const [addonsConfig, setAddonsConfig] = useState({
     mods: Array<IAddonEntry>(),
   })
+  const [settings, setSettings] = useState<ISettings>()
+
+  useEffect(() => {
+    window.electron.fileApi.getAddonsConfig().then((data: IAddonsConfig) => {
+      setAddonsConfig(data)
+    })
+  })
 
   return (
     <div className="content">
@@ -21,7 +28,12 @@ export default function Menu(_props: IProps) {
         <Button
           text="My Addons"
           selected={openedPage == 'My Addons'}
-          setSelectedButton={setOpenedPage}
+          setSelectedButton={(text: string) => {
+            setOpenedPage(text)
+            window.electron.fileApi.getAddonsConfig().then((data: IAddonsConfig) => {
+              setAddonsConfig(data)
+            })
+          }}
         />
         <Button
           text="Manage Addons"
@@ -33,21 +45,26 @@ export default function Menu(_props: IProps) {
           selected={openedPage == 'Settings'}
           setSelectedButton={(text: string) => {
             setOpenedPage(text)
-            window.electron.fileApi
-              .getAddonsConfig()
-              .then((data: IAddonsConfig) => {
-                setAddonsConfig(data)
-              })
+            window.electron.fileApi.getSettings().then((settings?: ISettings) => {
+              setSettings(settings)
+            })
           }}
         />
       </div>
 
       <div className="page">
         {openedPage == 'My Addons' && <MyAddons addonsConfig={addonsConfig} />}
-        {openedPage == 'Manage Addons' && (
-          <ManageAddons text={'Manage Addons'} />
+        {openedPage == 'Manage Addons' && <ManageAddons text={'Manage Addons'} />}
+        {openedPage == 'Settings' && (
+          <Settings
+            settings={settings}
+            signalSettingsChange={() => {
+              window.electron.fileApi.getSettings().then((settings?: ISettings) => {
+                setSettings(settings)
+              })
+            }}
+          />
         )}
-        {openedPage == 'Settings' && <Settings text={'Settings'} />}
       </div>
     </div>
   )
