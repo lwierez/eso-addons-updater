@@ -45,6 +45,7 @@ ipcMain.on('get-settings', (event: any) => {
   fs.readFile('settings.json', (error: any, data: string) => {
     if (error) {
       event.sender.send('reply-settings', undefined)
+      fs.writeFile('settings.json', JSON.stringify({}), () => {})
       return
     }
     try {
