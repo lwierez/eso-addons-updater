@@ -30,9 +30,11 @@ export default function Menu(_props: IProps) {
           selected={openedPage == 'My Addons'}
           setSelectedButton={(text: string) => {
             setOpenedPage(text)
-            window.electron.fileApi.getAddonsConfig().then((data: IAddonsConfig) => {
-              setAddonsConfig(data)
-            })
+            window.electron.fileApi
+              .getAddonsConfig()
+              .then((data: IAddonsConfig) => {
+                setAddonsConfig(data)
+              })
           }}
           linkImg="img/download-solid.svg"
         />
@@ -40,7 +42,7 @@ export default function Menu(_props: IProps) {
           text="Manage Addons"
           selected={openedPage == 'Manage Addons'}
           setSelectedButton={setOpenedPage}
-          linkImg="img/arrows-rotate-solid.svg"
+          linkImg="img/pencil-solid.svg"
         />
 
         <Button
@@ -48,9 +50,11 @@ export default function Menu(_props: IProps) {
           selected={openedPage == 'Settings'}
           setSelectedButton={(text: string) => {
             setOpenedPage(text)
-            window.electron.fileApi.getSettings().then((settings?: ISettings) => {
-              setSettings(settings)
-            })
+            window.electron.fileApi
+              .getSettings()
+              .then((settings?: ISettings) => {
+                setSettings(settings)
+              })
           }}
           linkImg="img/gear-solid.svg"
         />
@@ -58,14 +62,18 @@ export default function Menu(_props: IProps) {
 
       <div className="page">
         {openedPage == 'My Addons' && <MyAddons addonsConfig={addonsConfig} />}
-        {openedPage == 'Manage Addons' && <ManageAddons text={'Manage Addons'} />}
+        {openedPage == 'Manage Addons' && (
+          <ManageAddons text={'Manage Addons'} />
+        )}
         {openedPage == 'Settings' && (
           <Settings
             settings={settings}
             signalSettingsChange={() => {
-              window.electron.fileApi.getSettings().then((settings?: ISettings) => {
-                setSettings(settings)
-              })
+              window.electron.fileApi
+                .getSettings()
+                .then((settings?: ISettings) => {
+                  setSettings(settings)
+                })
             }}
           />
         )}

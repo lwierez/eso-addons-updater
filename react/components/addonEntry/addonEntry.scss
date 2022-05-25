@@ -1,0 +1,32 @@
+@import '../../variable.scss';
+
+.entry{
+    display:flex;
+    border-bottom: 1px $dusty-gray solid;
+    width: 95%;
+    vertical-align: bottom;
+    margin: 15px 0;
+
+    &__name{
+        width: 70%;
+        font-weight: bold;
+    }
+
+    &__version{
+      width: 20%;
+      font-style: oblique;
+    }
+
+    &__button{
+      margin : 0 2%;
+      border:none;
+      background-color: transparent;
+    }
+}
+
+
+
+.icon{    
+    width: 20px;
+}
+
