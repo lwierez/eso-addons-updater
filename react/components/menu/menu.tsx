@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './menu.scss'
 
 import Button from '../button/button'
@@ -16,6 +16,12 @@ export default function Menu(_props: IProps) {
   })
   const [settings, setSettings] = useState<ISettings>()
 
+  useEffect(() => {
+    window.electron.fileApi.getAddonsConfig().then((data: IAddonsConfig) => {
+      setAddonsConfig(data)
+    })
+  })
+
   return (
     <div className="content">
       <div className="menu">
@@ -24,11 +30,9 @@ export default function Menu(_props: IProps) {
           selected={openedPage == 'My Addons'}
           setSelectedButton={(text: string) => {
             setOpenedPage(text)
-            window.electron.fileApi
-              .getAddonsConfig()
-              .then((data: IAddonsConfig) => {
-                setAddonsConfig(data)
-              })
+            window.electron.fileApi.getAddonsConfig().then((data: IAddonsConfig) => {
+              setAddonsConfig(data)
+            })
           }}
         />
         <Button
@@ -50,10 +54,17 @@ export default function Menu(_props: IProps) {
 
       <div className="page">
         {openedPage == 'My Addons' && <MyAddons addonsConfig={addonsConfig} />}
-        {openedPage == 'Manage Addons' && (
-          <ManageAddons text={'Manage Addons'} />
+        {openedPage == 'Manage Addons' && <ManageAddons text={'Manage Addons'} />}
+        {openedPage == 'Settings' && (
+          <Settings
+            settings={settings}
+            signalSettingsChange={() => {
+              window.electron.fileApi.getSettings().then((settings?: ISettings) => {
+                setSettings(settings)
+              })
+            }}
+          />
         )}
-        {openedPage == 'Settings' && <Settings settings={settings} />}
       </div>
     </div>
   )
