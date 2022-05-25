@@ -40,6 +40,7 @@ export default function Menu(_props: IProps) {
           selected={openedPage == 'Manage Addons'}
           setSelectedButton={setOpenedPage}
         />
+
         <Button
           text="Settings"
           selected={openedPage == 'Settings'}
