@@ -4,13 +4,25 @@
   color: black;
   width: 100%;
   border :none;
-  padding: 5% 0;
   background-color: transparent;
   font-family: system-ui;
   font-size: 14px;
+  text-align: left;
+  div{
+   display:flex
+  }
+  img{
+    padding : 0 7%;
+    width: 20px;
+  }
+  
 }
 
 .clicked {
   font-weight: bold;
   background-color: $silver;
+}
+
+.icon{
+  
 }
