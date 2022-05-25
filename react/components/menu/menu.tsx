@@ -34,11 +34,13 @@ export default function Menu(_props: IProps) {
               setAddonsConfig(data)
             })
           }}
+          linkImg="img/download-solid.svg"
         />
         <Button
           text="Manage Addons"
           selected={openedPage == 'Manage Addons'}
           setSelectedButton={setOpenedPage}
+          linkImg="img/arrows-rotate-solid.svg"
         />
 
         <Button
@@ -50,6 +52,7 @@ export default function Menu(_props: IProps) {
               setSettings(settings)
             })
           }}
+          linkImg="img/gear-solid.svg"
         />
       </div>
 

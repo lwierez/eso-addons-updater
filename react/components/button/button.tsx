@@ -4,6 +4,7 @@ import './button.scss'
 interface IProps {
   text: string
   selected: boolean
+  linkImg: string
   setSelectedButton: (page: string) => void
 }
 
@@ -27,7 +28,10 @@ export default class Button extends React.Component<IProps, IState> {
           this.props.setSelectedButton(this.props.text)
         }}
       >
-        {this.props.text}
+        <div>
+          <img src={this.props.linkImg}></img>
+          <p> {this.props.text}</p>
+        </div>
       </button>
     )
   }
