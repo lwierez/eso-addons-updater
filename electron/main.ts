@@ -1,4 +1,4 @@
-import { IAddonsConfig, ISettings } from '../types/types'
+import { IAddonEntry, IAddonsConfig, ISettings } from '../types/types'
 
 const { BrowserWindow, app, ipcMain } = require('electron')
 const path = require('path')
@@ -60,5 +60,12 @@ ipcMain.on('get-settings', (event: any) => {
 ipcMain.on('save-settings', (_event: any, settings: ISettings) => {
   fs.writeFile('settings.json', JSON.stringify(settings), (error: any) => {
     if (error) return
+  })
+})
+
+ipcMain.on('get-addon-infos', (event: any, manifest_path: string) => {
+  fs.readFile(manifest_path, (error: any, data: string) => {
+    if (error) event.sender.send('reply-settings', undefined)
+    event.sender.send('reply-addon-infos', data)
   })
 })

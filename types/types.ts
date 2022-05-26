@@ -1,7 +1,8 @@
 export interface IAddonEntry {
     name: string,
     folder: string,
-    url: string
+    url: string,
+    manifest_data?: string
 }
 
 export interface IAddonsConfig {
@@ -9,5 +10,6 @@ export interface IAddonsConfig {
 }
 
 export interface ISettings {
-    config_path: string
+    config_path: string,
+    addons_folder_path: string
 }

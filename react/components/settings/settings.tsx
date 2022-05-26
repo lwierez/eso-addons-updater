@@ -35,6 +35,9 @@ export default class Settings extends React.Component<IProps, IState> {
                 if (!event.target.files) return
                 let newSettings = this.props.settings
                 newSettings.config_path = event.target.files[0].path
+                newSettings.addons_folder_path = event.target.files[0].path.slice(
+                  0, event.target.files[0].path.length - event.target.files[0].name.length
+                )
                 this.saveSettings(newSettings)
                 this.props.signalSettingsChange()
               }}

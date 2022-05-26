@@ -17,10 +17,29 @@ export default function Menu(_props: IProps) {
   const [settings, setSettings] = useState<ISettings>()
 
   useEffect(() => {
-    window.electron.fileApi.getAddonsConfig().then((data: IAddonsConfig) => {
-      setAddonsConfig(data)
-    })
-  })
+    window.electron.fileApi
+      .getSettings()
+      .then((initialSettings?: ISettings) => {
+        setSettings(initialSettings)
+        return initialSettings
+      })
+      .then((initialSettings?: ISettings) => {
+        window.electron.fileApi
+          .getAddonsConfig()
+          .then((initialAddonsConfig: IAddonsConfig) => {
+            for (let ii = 0; ii < initialAddonsConfig.mods.length; ii++) {
+              window.electron.fileApi
+                .getAddonInfos(
+                  `${initialSettings?.addons_folder_path}${initialAddonsConfig.mods[ii].folder}/${initialAddonsConfig.mods[ii].folder}.txt`
+                )
+                .then((data?: string) => {
+                  initialAddonsConfig.mods[ii].manifest_data = data
+                  setAddonsConfig(initialAddonsConfig)
+                })
+            }
+          })
+      })
+  }, [])
 
   return (
     <div className="content">
@@ -34,6 +53,19 @@ export default function Menu(_props: IProps) {
               .getAddonsConfig()
               .then((data: IAddonsConfig) => {
                 setAddonsConfig(data)
+              })
+              .then(() => {
+                for (let ii = 0; ii < addonsConfig.mods.length; ii++)
+                  window.electron.fileApi
+                    .getAddonInfos(
+                      `${settings?.addons_folder_path}${addonsConfig.mods[ii].folder}/${addonsConfig.mods[ii].folder}.txt`
+                    )
+                    .then((data?: string) => {
+                      addonsConfig.mods[ii].manifest_data = data
+                      setAddonsConfig(() => {
+                        return addonsConfig
+                      })
+                    })
               })
           }}
           linkImg="img/download-solid.svg"

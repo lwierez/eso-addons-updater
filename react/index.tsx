@@ -12,7 +12,8 @@ declare global {
       fileApi: {
         getAddonsConfig(): Promise<IAddonsConfig>,
         getSettings(): Promise<ISettings|undefined>,
-        saveSettings(settings: ISettings): void
+        saveSettings(settings: ISettings): void,
+        getAddonInfos(path: string): Promise<string|undefined>
       }
     }
   }
