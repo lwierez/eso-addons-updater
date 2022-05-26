@@ -34,5 +34,15 @@ contextBridge.exposeInMainWorld('electron', {
     saveSettings(settings: ISettings) {
       ipcRenderer.send('save-settings', settings)
     },
+
+    getAddonInfos(path: string) {
+      ipcRenderer.send('get-addon-infos', path)
+
+      return new Promise<string|undefined>((resolve) => {
+        ipcRenderer.once('reply-addon-infos', (_event: any, data?: string) => {
+          resolve(data)
+        })
+      })
+    }
   },
 })
