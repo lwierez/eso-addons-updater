@@ -5,8 +5,8 @@ import Button from '../button/button'
 import MyAddons from '../myAddons/myAddons'
 import ManageAddons from '../manageAddons/manageAddons'
 import Settings from '../settings/settings'
-import { IAddonsConfig, ISettings } from '../../../types/types'
-import { addonVersionFromManifest } from '../../utils/regex'
+import { IAddonEntry, IAddonsConfig, ISettings } from '../../../types/types'
+import { addonVersionFromManifest, addonVersionOnline } from '../../utils/regex'
 
 interface IProps {}
 
@@ -14,6 +14,23 @@ export default function Menu(_props: IProps) {
   const [openedPage, setOpenedPage] = useState<string>()
   const [addonsConfig, setAddonsConfig] = useState<IAddonsConfig>()
   const [settings, setSettings] = useState<ISettings>()
+
+  const getAddonVersionFromManifest = (manifest_data: string) => {
+    let versionFromManifest = addonVersionFromManifest.exec(manifest_data)
+    if (versionFromManifest && versionFromManifest[0])
+      return versionFromManifest[0]
+  }
+
+  const getAddonOnlineVersion = (resolve: Function, addonEntry: IAddonEntry) => {
+    fetch(addonEntry.url)
+      .then(response => response.text())
+      .then(response => {
+        let versionOnline = addonVersionOnline.exec(response)
+        if (versionOnline && versionOnline[0])
+          addonEntry.online_version = versionOnline[0]
+        resolve()
+      })
+  }
 
   // Effect on first mount of the component, then 'My Addons' is shown by default
   useEffect(() => {
@@ -34,19 +51,25 @@ export default function Menu(_props: IProps) {
       return
     window.electron.fileApi.getAddonsConfig()
       .then((newAddonsConfig: IAddonsConfig) => {
-        for (let ii = 0; ii < newAddonsConfig.mods.length; ii++) {
-          window.electron.fileApi.getAddonInfos(`${settings.addons_folder_path}${newAddonsConfig.mods[ii].folder}/${newAddonsConfig.mods[ii].folder}.txt`)
+        Promise.all(newAddonsConfig.mods.map((addonEntry: IAddonEntry) => {
+          return window.electron.fileApi.getAddonInfos(`${settings.addons_folder_path}${addonEntry.folder}/${addonEntry.folder}.txt`)
             .then((data?: string) => {
               if (!data)
                 return
-              newAddonsConfig.mods[ii].manifest_data = data
-              let versionFromManifest = addonVersionFromManifest.exec(data)
-              if (versionFromManifest && versionFromManifest[0])
-                newAddonsConfig.mods[ii].installed_version = versionFromManifest[0]
-              if (ii == newAddonsConfig.mods.length-1)
-                setAddonsConfig(newAddonsConfig)
+              addonEntry.manifest_data = data
+              addonEntry.installed_version = getAddonVersionFromManifest(data)
             })
-        }
+        }))
+          .then(() => {
+            Promise.all(newAddonsConfig.mods.map((addonEntry: IAddonEntry) => {
+              return new Promise<void>((resolve) => {
+                getAddonOnlineVersion(resolve, addonEntry)
+              })
+            }))
+              .then(() => {
+                setAddonsConfig(newAddonsConfig)
+              })
+          })
       })
   }, [settings])
 
