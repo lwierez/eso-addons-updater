@@ -39,7 +39,7 @@ contextBridge.exposeInMainWorld('electron', {
       ipcRenderer.send('get-addon-infos', path)
 
       return new Promise<string|undefined>((resolve) => {
-        ipcRenderer.once('reply-addon-infos', (_event: any, data?: string) => {
+        ipcRenderer.once(`reply-addon-infos-${path}`, (_event: any, data?: string) => {
           resolve(data)
         })
       })

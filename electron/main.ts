@@ -64,8 +64,8 @@ ipcMain.on('save-settings', (_event: any, settings: ISettings) => {
 })
 
 ipcMain.on('get-addon-infos', (event: any, manifest_path: string) => {
-  fs.readFile(manifest_path, (error: any, data: string) => {
+  fs.readFile(manifest_path, 'utf-8', (error: any, data: string) => {
     if (error) event.sender.send('reply-settings', undefined)
-    event.sender.send('reply-addon-infos', data)
+    event.sender.send(`reply-addon-infos-${manifest_path}`, data)
   })
 })
