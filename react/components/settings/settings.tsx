@@ -1,5 +1,6 @@
 import React from 'react'
 import { ISettings } from '../../../types/types'
+import './settings.scss'
 
 interface IProps {
   signalSettingsChange: () => void
@@ -22,7 +23,11 @@ export default class Settings extends React.Component<IProps, IState> {
       <>
         {(this.props.settings && (
           <div>
-            <span>Addons configuration files: {this.props.settings.config_path}</span>
+            <p className="input-name">Addons configuration files:</p>
+            <p className="file-name">{this.props.settings.config_path}</p>
+            <p className="input-name">
+              Change or add configuration file directory:
+            </p>
             <input
               type="file"
               onChange={(event) => {
