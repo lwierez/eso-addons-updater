@@ -14,6 +14,7 @@ export default function AddonEntry(props: IProps) {
     <div className="entry">
       <div className="entry__name">{addonEntry.name}</div>
       <div className="entry__version">2.1</div>
+      <div className="entry__version">2.1</div>
       <button className="entry__button">
         <img className="icon" src="img/arrows-rotate-solid.svg" />
       </button>
