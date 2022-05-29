@@ -3,17 +3,28 @@
 .header {
   display:flex;
   height:15%;
-  font: italic small-caps bold 16px/2 system-ui;
-  border-bottom: 3px $middle-blue solid;
 }
 
 .title{
+  text-align:center;
+}
+
+.top-bar{
+  height:15%;
+  position: fixed;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
+  font: italic small-caps bold 16px/2 system-ui;
+  border-bottom: 3px $middle-blue solid;
+  z-index: 1;
+  background-color: $silver;
 }
 
 
 .eso-img{
   width: 20%;
+  height: 15%;
   object-fit: cover;
+  position: fixed;
 }
