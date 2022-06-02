@@ -1,10 +1,7 @@
 export interface IAddonEntry {
     name: string,
     folder: string,
-    url: string,
-    manifest_data?: string,
-    installed_version?: string,
-    online_version?: string
+    url: string
 }
 
 export interface IAddonsConfig {

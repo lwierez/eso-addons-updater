@@ -5,8 +5,8 @@ import Button from '../button/button'
 import MyAddons from '../myAddons/myAddons'
 import ManageAddons from '../manageAddons/manageAddons'
 import Settings from '../settings/settings'
-import { IAddonEntry, IAddonsConfig, ISettings } from '../../../types/types'
-import { addonVersionFromManifest, addonVersionOnline } from '../../utils/regex'
+import { IAddonsConfig, ISettings } from '../../../types/types'
+import { isEqual } from 'lodash'
 
 interface IProps {}
 
@@ -15,23 +15,6 @@ export default function Menu(_props: IProps) {
   const [addonsConfig, setAddonsConfig] = useState<IAddonsConfig>()
   const [settings, setSettings] = useState<ISettings>()
 
-  const getAddonVersionFromManifest = (manifest_data: string) => {
-    let versionFromManifest = addonVersionFromManifest.exec(manifest_data)
-    if (versionFromManifest && versionFromManifest[0])
-      return versionFromManifest[0]
-  }
-
-  const getAddonOnlineVersion = (resolve: Function, addonEntry: IAddonEntry) => {
-    fetch(addonEntry.url)
-      .then(response => response.text())
-      .then(response => {
-        let versionOnline = addonVersionOnline.exec(response)
-        if (versionOnline && versionOnline[0])
-          addonEntry.online_version = versionOnline[0]
-        resolve()
-      })
-  }
-
   // Effect on first mount of the component, then 'My Addons' is shown by default
   useEffect(() => {
     setOpenedPage('My Addons')
@@ -39,37 +22,19 @@ export default function Menu(_props: IProps) {
 
   // Effect if current page is changed. Then settings will be reloaded
   useEffect(() => {
-    window.electron.fileApi.getSettings()
-      .then((newSettings?: ISettings) => {
-        setSettings(newSettings)
-      })
+    window.electron.fileApi.getSettings().then((newSettings?: ISettings) => {
+      if (isEqual(newSettings, settings)) return
+      setSettings(newSettings)
+    })
   }, [openedPage])
 
   // Effect if settings have been reloaded. Then addons data will be changed
   useEffect(() => {
-    if (!settings?.config_path)
-      return
-    window.electron.fileApi.getAddonsConfig()
+    if (!settings?.config_path) return
+    window.electron.fileApi
+      .getAddonsConfig()
       .then((newAddonsConfig: IAddonsConfig) => {
-        Promise.all(newAddonsConfig.mods.map((addonEntry: IAddonEntry) => {
-          return window.electron.fileApi.getAddonInfos(`${settings.addons_folder_path}${addonEntry.folder}/${addonEntry.folder}.txt`)
-            .then((data?: string) => {
-              if (!data)
-                return
-              addonEntry.manifest_data = data
-              addonEntry.installed_version = getAddonVersionFromManifest(data)
-            })
-        }))
-          .then(() => {
-            Promise.all(newAddonsConfig.mods.map((addonEntry: IAddonEntry) => {
-              return new Promise<void>((resolve) => {
-                getAddonOnlineVersion(resolve, addonEntry)
-              })
-            }))
-              .then(() => {
-                setAddonsConfig(newAddonsConfig)
-              })
-          })
+        setAddonsConfig(newAddonsConfig)
       })
   }, [settings])
 
@@ -88,7 +53,6 @@ export default function Menu(_props: IProps) {
           setSelectedButton={setOpenedPage}
           linkImg="img/pencil-solid.svg"
         />
-
         <Button
           text="Settings"
           selected={openedPage == 'Settings'}
@@ -98,8 +62,15 @@ export default function Menu(_props: IProps) {
       </div>
 
       <div className="page">
-        {openedPage == 'My Addons' && addonsConfig && <MyAddons addonsConfig={addonsConfig} />}
-        {openedPage == 'Manage Addons' && <ManageAddons text={'Manage Addons'} />}
+        {openedPage == 'My Addons' && addonsConfig && (
+          <MyAddons
+            addonsConfig={addonsConfig}
+            directory={settings?.addons_folder_path}
+          />
+        )}
+        {openedPage == 'Manage Addons' && (
+          <ManageAddons text={'Manage Addons'} />
+        )}
         {openedPage == 'Settings' && (
           <Settings
             settings={settings}

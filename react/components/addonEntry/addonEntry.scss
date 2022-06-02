@@ -22,9 +22,11 @@
       border:none;
       background-color: transparent;
     }
+
+    &__disabled{
+      filter: invert(100%);
+    }
 }
-
-
 
 .icon{    
     width: 20px;

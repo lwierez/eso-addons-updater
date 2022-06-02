@@ -4,15 +4,22 @@ import AddonEntry from '../addonEntry/addonEntry'
 
 interface IProps {
   addonsConfig: IAddonsConfig
+  directory?: string
 }
 
 export default function AddonsList(props: IProps) {
-  const { addonsConfig } = props
+  const { addonsConfig, directory } = props
 
   return (
     <div>
       {addonsConfig.mods.map((addonEntry: IAddonEntry) => {
-        return <AddonEntry key={addonEntry.name} addonEntry={addonEntry} />
+        return (
+          <AddonEntry
+            key={addonEntry.name}
+            addonEntry={addonEntry}
+            directory={directory}
+          />
+        )
       })}
     </div>
   )

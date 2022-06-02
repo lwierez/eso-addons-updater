@@ -5,10 +5,11 @@ import './myAddons.scss'
 
 interface IProps {
   addonsConfig: IAddonsConfig
+  directory?: string
 }
 
 export default function MyAddons(props: IProps) {
-  const { addonsConfig } = props
+  const { addonsConfig, directory } = props
 
   return (
     <>
@@ -22,7 +23,7 @@ export default function MyAddons(props: IProps) {
               <img className="icon" src="img/arrows-rotate-solid.svg" />
             </button>
           </div>
-          <AddonsList addonsConfig={addonsConfig} />
+          <AddonsList addonsConfig={addonsConfig} directory={directory} />
         </div>
       )) || (
         <div>
