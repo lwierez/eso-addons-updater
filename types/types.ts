@@ -1,7 +1,8 @@
 export interface IAddonEntry {
     name: string,
     folder: string,
-    url: string
+    url: string,
+    archive?: ArrayBuffer
 }
 
 export interface IAddonsConfig {

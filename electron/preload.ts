@@ -43,6 +43,10 @@ contextBridge.exposeInMainWorld('electron', {
           resolve(data)
         })
       })
+    },
+
+    installAddon(args: { addon: IAddonEntry; directory: string }) {
+      ipcRenderer.send('install-addon', args)
     }
   },
 })

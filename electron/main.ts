@@ -3,6 +3,7 @@ import { IAddonEntry, IAddonsConfig, ISettings } from '../types/types'
 const { BrowserWindow, app, ipcMain } = require('electron')
 const path = require('path')
 const fs = require('fs')
+const extract = require('extract-zip')
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -68,4 +69,18 @@ ipcMain.on('get-addon-infos', (event: any, manifest_path: string) => {
     if (error) event.sender.send('reply-settings', undefined)
     event.sender.send(`reply-addon-infos-${manifest_path}`, data)
   })
+})
+
+ipcMain.on('install-addon', (_event: any, args: { addon: IAddonEntry; directory: string }) => {
+  if (!args.addon.archive) return
+  fs.writeFile(
+    `${args.directory}${args.addon.folder}.zip`,
+    new Uint8Array(args.addon.archive),
+    (error: any) => {
+      if (error) return
+      extract(`${args.directory}${args.addon.folder}.zip`, { dir: args.directory }).then(() => {
+        // Remove ZIP archive
+      })
+    }
+  )
 })

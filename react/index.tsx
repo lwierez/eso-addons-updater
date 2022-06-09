@@ -1,6 +1,6 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
-import { IAddonsConfig, ISettings } from '../types/types'
+import { IAddonEntry, IAddonsConfig, ISettings } from '../types/types'
 
 import App from './components/app/app'
 import './index.scss'
@@ -13,7 +13,8 @@ declare global {
         getAddonsConfig(): Promise<IAddonsConfig>,
         getSettings(): Promise<ISettings|undefined>,
         saveSettings(settings: ISettings): void,
-        getAddonInfos(path: string): Promise<string|undefined>
+        getAddonInfos(path: string): Promise<string|undefined>,
+        installAddon(args: { addon: IAddonEntry; directory: string }): void
       }
     }
   }
