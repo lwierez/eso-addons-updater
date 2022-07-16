@@ -22,7 +22,7 @@ export default function AddonEntry(props: IProps) {
   const [installedVersion, setInstalledVersion] = useState<string>()
   const [onlineVersion, setOnlineVersion] = useState<string>()
 
-  useEffect(() => {
+  const getOnlineVersion = () => {
     fetch(addonEntry.url)
       .then((response) => response.text())
       .then((response) => {
@@ -30,15 +30,23 @@ export default function AddonEntry(props: IProps) {
         let versionFromOnline = addonVersionOnline.exec(response)
         if (versionFromOnline && versionFromOnline[0]) setOnlineVersion(versionFromOnline[0])
       })
-  }, [addonEntry])
+  }
 
-  useEffect(() => {
+  const getInstalledVersion = () => {
     if (!directory) return
     window.electron.fileApi
       .getAddonInfos(`${directory}${addonEntry.folder}/${addonEntry.folder}.txt`)
       .then((data?: string) => {
         setManifest(data)
       })
+  }
+
+  useEffect(() => {
+    getOnlineVersion()
+  }, [addonEntry])
+
+  useEffect(() => {
+    getInstalledVersion()
   }, [addonEntry])
 
   const onClickDownload = () => {
@@ -60,12 +68,7 @@ export default function AddonEntry(props: IProps) {
                 window.electron.fileApi
                   .installAddon({ addon: addonEntry, directory: directory })
                   .then(() => {
-                    if (!directory) return
-                    window.electron.fileApi
-                      .getAddonInfos(`${directory}${addonEntry.folder}/${addonEntry.folder}.txt`)
-                      .then((data?: string) => {
-                        setManifest(data)
-                      })
+                    getInstalledVersion()
                   })
               })
           }
@@ -84,7 +87,13 @@ export default function AddonEntry(props: IProps) {
       <div className="entry__name">{addonEntry.name}</div>
       <div className="entry__version">{installedVersion}</div>
       <div className="entry__version">{onlineVersion}</div>
-      <button className="entry__button">
+      <button
+        className="entry__button"
+        onClick={() => {
+          getInstalledVersion()
+          getOnlineVersion()
+        }}
+      >
         <img className="icon" src="img/arrows-rotate-solid.svg" />
       </button>
       <button
