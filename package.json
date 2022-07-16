@@ -6,15 +6,24 @@
   "scripts": {
     "electron:start": "tsc electron/preload.ts && tsc electron/main.ts && electron --trace-warnings .",
     "watch": "webpack --config webpack.common.js --watch",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config webpack.prod.js && electron-builder"
   },
-  "author": "",
+  "build": {
+    "appId": "ESO Addons Updater",
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    }
+  },
+  "author": {
+    "name": "WIEREZ Loïc",
+    "email": "loic.wierez@viacesi.fr"
+  },
   "license": "MIT",
   "dependencies": {
-    "@types/lodash": "^4.14.182",
-    "@types/react": "^18.0.9",
-    "@types/react-dom": "^18.0.3",
-    "electron": "^18.2.0",
     "extract-zip": "^2.0.1",
     "lodash": "^4.17.21",
     "react": "^18.1.0",
@@ -25,8 +34,13 @@
     "@babel/preset-env": "^7.17.10",
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
+    "@types/lodash": "^4.14.182",
+    "@types/react": "^18.0.9",
+    "@types/react-dom": "^18.0.3",
     "babel-loader": "^8.2.5",
     "css-loader": "^6.7.1",
+    "electron": "^19.0.8",
+    "electron-builder": "^23.1.0",
     "sass": "^1.52.0",
     "sass-loader": "^13.0.0",
     "style-loader": "^3.3.1",

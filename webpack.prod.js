@@ -2,7 +2,7 @@ const path = require('path')
 
 
 module.exports = {
-    mode: 'development',
+    mode: 'production',
     entry: './react/index.tsx',
     devtool: 'inline-source-map',
     target: 'electron-renderer',

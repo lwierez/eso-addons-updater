@@ -1,13 +1,14 @@
 # Node modules & build path
-build
-node_modules
+dist/
+electron/js
+node_modules/
 
 # Compiled files for electron & TS. We only want the typescript source files in the repository
 electron/*.js
 types/*.js
 
 # IDE configs
-.vscode
+.vscode/
 
 # App settings
 settings.json
