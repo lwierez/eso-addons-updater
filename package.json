@@ -16,6 +16,11 @@
         "AppImage",
         "deb"
       ]
+    },
+    "win": {
+      "target": [
+        "portable"
+      ]
     }
   },
   "author": {
