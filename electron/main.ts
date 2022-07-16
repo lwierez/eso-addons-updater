@@ -16,6 +16,8 @@ function createWindow() {
     },
   })
 
+  win.removeMenu()
+
   win.loadFile(path.join(__dirname, 'index.html'))
 }
 
