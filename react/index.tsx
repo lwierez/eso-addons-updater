@@ -14,7 +14,7 @@ declare global {
         getSettings(): Promise<ISettings|undefined>,
         saveSettings(settings: ISettings): void,
         getAddonInfos(path: string): Promise<string|undefined>,
-        installAddon(args: { addon: IAddonEntry; directory: string }): void
+        installAddon(args: { addon: IAddonEntry; directory: string }): Promise<void>
       }
     }
   }

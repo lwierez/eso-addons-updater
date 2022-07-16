@@ -57,7 +57,16 @@ export default function AddonEntry(props: IProps) {
               .then((response) => {
                 if (!directory) return
                 addonEntry.archive = response
-                window.electron.fileApi.installAddon({ addon: addonEntry, directory: directory })
+                window.electron.fileApi
+                  .installAddon({ addon: addonEntry, directory: directory })
+                  .then(() => {
+                    if (!directory) return
+                    window.electron.fileApi
+                      .getAddonInfos(`${directory}${addonEntry.folder}/${addonEntry.folder}.txt`)
+                      .then((data?: string) => {
+                        setManifest(data)
+                      })
+                  })
               })
           }
         })

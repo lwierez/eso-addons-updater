@@ -71,7 +71,7 @@ ipcMain.on('get-addon-infos', (event: any, manifest_path: string) => {
   })
 })
 
-ipcMain.on('install-addon', (_event: any, args: { addon: IAddonEntry; directory: string }) => {
+ipcMain.on('install-addon', (event: any, args: { addon: IAddonEntry; directory: string }) => {
   if (!args.addon.archive) return
   fs.writeFile(
     `${args.directory}${args.addon.folder}.zip`,
@@ -79,7 +79,9 @@ ipcMain.on('install-addon', (_event: any, args: { addon: IAddonEntry; directory:
     (error: any) => {
       if (error) return
       extract(`${args.directory}${args.addon.folder}.zip`, { dir: args.directory }).then(() => {
-        // Remove ZIP archive
+        fs.unlink(`${args.directory}${args.addon.folder}.zip`, () => {
+          event.sender.send(`reply-install-addon-${args.addon.name}`)
+        })
       })
     }
   )

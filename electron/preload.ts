@@ -47,6 +47,12 @@ contextBridge.exposeInMainWorld('electron', {
 
     installAddon(args: { addon: IAddonEntry; directory: string }) {
       ipcRenderer.send('install-addon', args)
+
+      return new Promise<void>((resolve) => {
+        ipcRenderer.once(`reply-install-addon-${args.addon.name}`, (_event: any) => {
+          resolve()
+        })
+      })
     }
   },
 })
