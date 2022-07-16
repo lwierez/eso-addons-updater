@@ -15,21 +15,18 @@ export default function MyAddons(props: IProps) {
     <>
       {(addonsConfig.mods.length > 0 && (
         <div>
-          <div className="top-lign">
+          {/* <div className="top-lign">
             <button className="entry__button">
               <img className="icon" src="img/download-solid.svg" />
             </button>
             <button className="entry__button">
               <img className="icon" src="img/arrows-rotate-solid.svg" />
             </button>
-          </div>
+          </div> */}
           <AddonsList addonsConfig={addonsConfig} directory={directory} />
         </div>
       )) || (
-        <div>
-          No addon found (please insert funny image)! Is ESO Addons Updater
-          configured?
-        </div>
+        <div>No addon found (please insert funny image)! Is ESO Addons Updater configured?</div>
       )}
     </>
   )
